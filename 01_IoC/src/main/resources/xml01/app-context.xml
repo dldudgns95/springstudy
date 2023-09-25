@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- Calculator calc = new Calculator(); 스코프는 생략 가능-->
+  <bean class="com.gdu.app01.xml01.Calculator" id="calc" scope="singleton"/>
+  
+  <!-- 
+    1. 디폴트 생성자 + setter
+      Person man = new Person();
+      man.setName("홍길동");
+      man.setAge("30");
+      man.setCalculator(calc);  
+  -->
+  <!--
+    <property>는 객체의 setter와 연결되기 때문에 반드시 setter가 있어야 한다. 
+    다른 bean을 활용할려면 ref="" 으로 사용해야 한다.
+  -->
+  <bean class="com.gdu.app01.xml01.Person" id="man">
+    <property name="name" value="홍길동"/>
+    <property name="age" value="20"/>
+    <property name="calculator" ref="calc"/>
+  </bean>
+  
+  <!--
+    2. 필드를 이용한 생성자
+      Person woman = new Person("앨리스", 40, calc);
+  -->
+  <!-- name을 따로 정해줄 수 없기 때문에 순서를 맞춰서 적어줘야 한다. -->
+  <bean class="com.gdu.app01.xml01.Person" id="woman">
+    <constructor-arg value="앨리스"/>
+    <constructor-arg value="40"/>
+    <constructor-arg ref="calc"/>
+  </bean>
+  
+  
+</beans>

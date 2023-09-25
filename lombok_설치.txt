@@ -1,0 +1,4 @@
+project lombok 다운로드 후 CMD 창에 'cd lombok.jar다운로드된경로' (다른 드라이브 경로일 시, 'D:') -> 경로로 이동 되었는지 확인 후 'java -jar lombok.jar'
+(안될 경우 고급 시스템 설정 - 환경변수 - 시스템변수 에서 JAVA_HOME과 Path에 '%JAVA_HOME%\bin;' 확인)
+STS.exe 경로 설정 후 설치
+lombok 설치 후 eclipse 실행이 안되는 경우 eclipse 폴더 안의 eclipse.ini 파일의 마지막 줄(javaagent)의 경로에 문제가 생겼기에 지우고 사용하면 된다(lombok은 사용안됨)
