@@ -13,7 +13,7 @@
         <value>수학</value>
       </list>
     </property>
-    <!-- Set -->
+    <!-- Set(같은 값은 하나만 출력) -->
     <property name="contacts">
       <set>
         <value>010-1111-1111</value>
