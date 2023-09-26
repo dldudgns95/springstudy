@@ -1,8 +1,6 @@
 package com.gdu.app02.anno01;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +14,7 @@ public class AppConfig {
   }
   
   // Member
+  @Bean
   public Member member() {
     Member member = new Member();
     member.setName("홍길동");
