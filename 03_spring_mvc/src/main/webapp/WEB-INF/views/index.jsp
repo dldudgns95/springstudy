@@ -33,6 +33,9 @@
   <div>
     <a href="${contextPath}/article/add.do?title=이럴수가">기사 등록하기</a>
   </div>
+  <div>
+    <a href="${contextPath}/test/main.do">테스트용</a>
+  </div>
   
 </body>
 </html>
