@@ -19,18 +19,20 @@ public class MyController01 {
    * 3. 매개변수
    *  1) HttpServletRequest를 선언해서 사용할 수 있다.
    *  2) HttpServletResponse를 선언해서 사용할 수 있다.
+   *  3) Modeld을 선언해서 forward할 정보를 저장할 수 있다.
+   *  4) HttpSession을 선언해서 사용할 수 있다.
    * 4. 요청(@RequestMapping)
    *  1) 메소드 : GET, POST
    *  2) URL    : 요청 주소 
    */
   
-  // value ="/" : contextPath 요청을 의미한다. http//localhost/app03/ 주소를 의미한다.(배열로 다중 사용 가능)
+  // value ="/" : contextPath 요청을 의미한다. http//localhost/app03/ 주소를 의미한다.(배열로 value 다중 사용 가능)
   @RequestMapping(value = {"/", "/index.do"}, method = RequestMethod.GET)
   public String welcome() {
     // ViewResolver의 prefix : /WEB-INF/views/
     // ViewResolver의 suffix : .jsp
-    // servlet-context.xml에서 ViewResolver의 bean 확인 가능
-    return "index";
+    // WEB-INF/spring/appServlet/servlet-context.xml에서 ViewResolver의 bean 확인 가능
+    return "index"; //         /WEB-INF/views/index.jsp
   }
   
   // 주소가 같아도 method가 다르면 다른 메소드이다.
