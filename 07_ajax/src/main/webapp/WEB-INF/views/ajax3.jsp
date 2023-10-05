@@ -7,23 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-  .board{
-    border-bottom: 1px solid gray;
-  }
-</style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <div>
-    <h3>게시글 목록</h3>
-    <c:forEach items="${boardList}" var="boardDto">
-      <div class="board">
-        <div>제목 : ${boardDto.title}</div>
-        <div>작성 : ${boardDto.editor}</div>
-      </div>
-    </c:forEach>
-  </div>
+
 
 </body>
 </html>

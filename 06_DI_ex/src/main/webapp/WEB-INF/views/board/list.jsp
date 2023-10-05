@@ -7,20 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-  .board{
-    border-bottom: 1px solid gray;
-  }
-</style>
 </head>
 <body>
 
   <div>
     <h3>게시글 목록</h3>
-    <c:forEach items="${boardList}" var="boardDto">
-      <div class="board">
-        <div>제목 : ${boardDto.title}</div>
-        <div>작성 : ${boardDto.editor}</div>
+    <c:forEach items="${boardList}" var="b">
+      <div>
+        <a href="${contextPath}/board/detail.do?boardNo=${b.boardNo}">${b.boardNo} - ${b.title} - ${b.editor}</a>
       </div>
     </c:forEach>
   </div>
