@@ -20,7 +20,7 @@ import com.gdu.app12.batch.ContactScheduler;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-@MapperScan(basePackages="com.gdu.app12.dao")
+@MapperScan(basePackages="com.gdu.app12.dao")  // @Mapper로 등록된 인터페이스의 검색이 가능하도록 @MapperScan을 추가
 @PropertySource(value="classpath:application.properties")  // Spring이 자동으로 파일을 읽어서 Bean에 추가시킨다.
 @EnableTransactionManagement  // @Transactional 허용
 @EnableAspectJAutoProxy       // @aspect 허용

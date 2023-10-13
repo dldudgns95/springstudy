@@ -24,6 +24,7 @@ public class LogAop {
   @Pointcut("execution(* com.gdu.app11.controller.*Controller.*(..))")
   public void setPointCut() { }
   
+  //@Before("execution(* com.gdu.app11.controller.*Controller.*(..))") 포인트컷 없이 한번에 사용 가능
   // 어드바이스 : 포인트컷에서 실제로 동작할 내용
   @Before("setPointCut()")
   public void doLog(JoinPoint joinPoint) {  // JoinPoint : 어드바이스로 전달되는 메소드
@@ -59,7 +60,5 @@ public class LogAop {
     log.info("{}", params);                                           // 요청 파라미터
     
   }
-  
-  // @Before("execution(* com.gdu.app11.controller.*Controller.*(..))") 포인트컷 없이 한번에 사용 가능
   
 }
