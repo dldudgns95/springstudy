@@ -16,7 +16,7 @@
   
   function fnShopSearch(){
     $('#btn_search').click(function(){
-  	  if($('#search').val() === '') {
+  	  if($('#query').val() === '') {
   	    alert('검색어를 입력해주세요.');
   	    return;
   	  }
@@ -25,11 +25,21 @@
       	url: '${contextPath}/shop/list.do',
       	data:'query='+ $('#query').val() +'&display=' + $('#search_display').val() + '&sort=' + $('.search_sort').val(),
       	dataTyp: 'json',
-      	success: function(){
-      		
+      	success: function(resData){
+      	  fnSearchResult(resData);      		
       	}
       })
     })
+  }
+  
+  function fnSearchResult(resData){
+    $('#search_result').empty();
+    for(let i=0; i<resData.length; i++){
+      var result = '<tr><td><a href="'+ resData[i].link + '">' + resData[i].title + '</a></td><td><a href="'+ resData[i].link +'"><img src="' + resData[i].image + '" width="192px"></a></td><td>' + resData[i].lprice + '</td><td>' + resData[i].mallName + '</td></tr>';
+      $('#search_result').append(result);
+    }
+      console.log(resData[0]);
+      console.log(resData);
   }
   
 </script>
@@ -78,7 +88,5 @@
     </tbody>
   </table>
   
-  
-
 </body>
 </html>
