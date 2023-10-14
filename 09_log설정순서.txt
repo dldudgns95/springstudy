@@ -1,0 +1,30 @@
+1. pom.xml의 log4j 디펜던시를 logback 디펜던시로 변경
+  https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+  (1.4.11 버전 사용 시 org.slf4j-version 버전을 2.0.7로 변경(https://logback.qos.ch/download.html 참조))
+2. src/main/resources의 log4j.xml을 logback.xml로 변경 (https://logback.qos.ch/manual/appenders.html 참조)
+   <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd"> 삭제
+
+   <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+   </log4j:configuration>
+   을 아래와 같이 수정
+   <configuration>
+   </configuration>
+   
+   사용할 appender들을 추가 및 수정 (09_jdbc_unit의 logback.xml 참조)
+   추가 한 뒤 <!--Root Logger-->에 appender-ref 추가
+   ex) <appender-ref ref="rolling" /> (appender의 name과 ref 이름 맞추기)
+
+3. log에 쿼리문 출력할려면 log4jdbc-log4j2-jdbc4.1 디펜던시 추가 (https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1)
+   아래 logger 사용 가능
+   <logger name="jdbc.sqlonly"         level="info" /> <!-- 쿼리문 출력하기 -->
+   <logger name="jdbc.sqltiming"       level="off" />  <!-- 쿼리문 + 실행시간 출력하기 -->
+   <logger namne="jdbc.resultsettable" level="info" /> <!-- SELECT 결과를 테이블 형식으로 출력하기 -->
+   <logger name="jdbc.connection"     level="off" />   <!-- Connection 연결/종료 정보 출력하기 -->
+   <logger name="jdbc.audit"          level="off" />   <!-- ResultSet을 제외한 jdbc 호출 정보 출력하기 -->
+   <logger name="jdbc.resultset"      level="off" />   <!-- ResultSet을 포함한 jdbc 호출 정보 출력하기 -->
+
+4. sysout 대신 사용할 시에 @Slf4j(클래스 앞에 붙임) + log.info(내용); 을 사용할 수 있다.
+   
+
+   
+   
