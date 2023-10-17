@@ -14,6 +14,7 @@ public class MyFileUtil {
     LocalDate today = LocalDate.now();
     return "/storage/" + today.getYear() + "/" + String.format("%02d", today.getMonthValue()) + "/" + String.format("%02d", today.getDayOfMonth());
     // return "/storage/" + DateTimeFormat.ofPattern("yyyy/MM/dd").format(today);
+    // 저장되는 곳은 D:\storage (파일이 C에 있다면 C:\storage)
   }
   
   //파일이 저장될 이름 반환하기

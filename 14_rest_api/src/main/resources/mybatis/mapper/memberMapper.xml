@@ -34,4 +34,36 @@
       FROM MEMBER_T
   </select>
   
+  <select id="getMember" parameterType="int" resultType="MemberDto">
+    SELECT MEMBER_NO, ID, NAME, GENDER, ADDRESS
+      FROM MEMBER_T
+     WHERE MEMBER_NO = #{memberNo}
+  </select>
+  
+  <update id="updateMember" parameterType="MemberDto">
+    UPDATE MEMBER_T
+       SET NAME = #{name}
+         , GENDER = #{gender}
+         , ADDRESS = #{address}
+     WHERE MEMBER_NO = #{memberNo}
+  </update>
+  
+  <delete id="deleteMember" parameterType="int">
+    DELETE
+      FROM MEMBER_T
+     WHERE MEMBER_NO = #{memberNo}
+  </delete>
+  
+  <delete id="deleteMembers" parameterType="List">
+    DELETE
+      FROM MEMBER_T
+    <where>  <!-- <where></where>은 if문을 사용할 때 주로 사용된다. -->
+      MEMBER_NO
+      <!-- parameterType을 String으로 받는 경우 ${memberNo}으로 사용이 가능하다(문자열에서만 사용 권장) -->
+      <foreach collection="list" item="memberNo" open="IN(" close=")" separator=",">
+        #{memberNo}
+      </foreach> 
+    </where>
+  </delete>
+  
 </mapper>
