@@ -161,10 +161,14 @@
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Context docBase="myapp" path="/myapp" reloadable="true" source="org.eclipse.jst.jee.server:myapp"/></Host>
 =======
       <Context docBase="notice" path="/myapp" reloadable="true" source="org.eclipse.jst.jee.server:notice"/></Host>
 >>>>>>> 102482631e665924196139d5f9b3ccf95cffdedc
+=======
+      </Host>
+>>>>>>> d3b31199e5d3db3306b631f46c3e0b89b1f68a1b
     </Engine>
   </Service>
 </Server>

@@ -1,0 +1,22 @@
+function fnChkAll(){
+	$('#chk_all').click(function(){
+	  if( $('#chk_all').prop('checked')){
+		$('.chk_one').prop('checked', true);
+	  } else {
+		$('.chk_one').prop('checked', false);
+	  }
+	  
+	})
+  }
+  
+  function fnChkOne(){
+	$(document).on('click', '.chk_one', function(){
+	  var total = $('.chk_one').length;
+	  var checked = $('.chk_one:checked').length;
+	  if(total == checked) {
+		$('#chk_all').prop('checked', true);
+	  } else {
+		  $('#chk_all').prop('checked', false);
+	  }
+	})
+  }
