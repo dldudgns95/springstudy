@@ -2,10 +2,14 @@ package com.gdu.app13.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,12 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class FileController {
-  
+
   private final FileService fileService;
   
-  // form의 enctype="multipart/form-data" 와 input file을 받을려면 MultipartHttpServletRequest로 받아야 한다.
   @RequestMapping(value="/upload.do", method=RequestMethod.POST)
-  public String upload(MultipartHttpServletRequest multipartRequest,RedirectAttributes redirectAttributes) {
+  public String upload(MultipartHttpServletRequest multipartRequest, RedirectAttributes redirectAttributes) {
     int addResult = fileService.upload(multipartRequest);
     redirectAttributes.addFlashAttribute("addResult", addResult);
     return "redirect:/main.do";
@@ -32,5 +35,16 @@ public class FileController {
   public Map<String, Object> ajaxUpload(MultipartHttpServletRequest multipartRequest) {
     return fileService.ajaxUpload(multipartRequest);
   }
-
+  
+  @RequestMapping(value="/ckeditor/upload.do", method=RequestMethod.POST, produces="application/json")
+  @ResponseBody
+  public Map<String, Object> ckeditorUpload(MultipartFile upload, HttpServletRequest request) {
+    return fileService.ckeditorUpload(upload, request.getContextPath());
+  }
+  
+  @RequestMapping(value="/add.do", method=RequestMethod.POST)
+  public void add(@RequestParam String contents) {
+    System.out.println(contents);
+  }
+  
 }
