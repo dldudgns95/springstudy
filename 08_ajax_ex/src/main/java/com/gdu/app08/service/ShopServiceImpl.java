@@ -1,6 +1,7 @@
 package com.gdu.app08.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +13,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.gdu.app08.dto.ShopDto;
@@ -67,13 +69,24 @@ public class ShopServiceImpl implements ShopService {
       JSONObject obj = (JSONObject)jsonParser.parse(sb.toString());
       JSONArray items = (JSONArray)obj.get("items");
       
-      System.out.println(items);
+      for(Object param : items) {
+        JSONObject result = (JSONObject)param;
+        String title = (String)result.get("title");
+        String link = (String)result.get("link");
+        int lprice = Integer.parseInt(String.valueOf(result.get("lprice")));
+        String mallName = (String)result.get("mallName");
+        
+        String image = (String)result.get("image");
+        
+        ShopDto shopDto = new ShopDto(title, link, image, lprice, mallName);
+        list.add(shopDto);
+      }
       
     } catch (Exception e) {
       e.printStackTrace();
     }
     
-    return null;
+    return list;
   }
   
 }
