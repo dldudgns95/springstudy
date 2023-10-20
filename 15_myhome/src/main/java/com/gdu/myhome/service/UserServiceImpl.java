@@ -38,7 +38,8 @@ public class UserServiceImpl implements UserService {
     
     // 응답이 다양할 경우에는 controller를 거치지 않고 response로 직접 반환한다.
       try {
-        response.sendRedirect(request.getContextPath() + "/main.do");
+        // request.getParameter("referer") = http://localhost:8080/myhome/
+        response.sendRedirect(request.getParameter("referer"));
       } catch (Exception e) {
         e.printStackTrace();
       }
