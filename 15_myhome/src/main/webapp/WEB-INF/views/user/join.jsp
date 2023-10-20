@@ -9,10 +9,9 @@
 <jsp:include page="../layout/header.jsp">
   <jsp:param value="회원가입" name="title"/>
 </jsp:include>
-<script src="${contextPath}/resources/js/user_join.js"></script>
-<script>
-  
-</script>
+
+<!-- script src를 사용할 때 ?dt=${dt}를 사용해서 항상 새로 업데이트되게 해줘야 한다. -->
+<script src="${contextPath}/resources/js/user_join.js?dt=${dt}"></script>
 
 <div>
 
@@ -28,13 +27,13 @@
         <span id="msg_email"></span>
       </div>
       <div>
-        <input type="text" id="code" placeholder="인증코드입력">
-        <button type="button" id="btn_verify_code">인증하기</button>
+        <input type="text" id="code" placeholder="인증코드입력" disabled>
+        <button type="button" id="btn_verify_code" disabled>인증하기</button>
       </div>
     </div>
     
     
-    <div>
+    <div> 
       <input type="hidden" name="event" value="${event}">
       <button type="submit">회원가입하기</button>
     </div>
