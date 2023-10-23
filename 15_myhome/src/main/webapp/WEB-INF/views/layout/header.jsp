@@ -21,7 +21,7 @@
 <body>
 
   <div class="header_wrap">
-    <div class="logo"></div>
+    <div class="logo"><a href="${contextPath}/main.do"><img src="${contextPath}/resources/image/google.png" class="logo_img"></a></div>
     <div class="login_wrap">
       <c:if test="${sessionScope.user == null}">
         <ul>
@@ -39,7 +39,7 @@
         <li><a href="${contextPath}">댓글형게시판</a></li>
         <li><a href="${contextPath}">계층게시판</a></li>
         <li><a href="${contextPath}">첨부게시판</a></li>
-        <li><a href="${contextPath}">MY</a></li>
+        <li><a href="${contextPath}/user/mypage.form">MY</a></li>
       </ul>
     </div>
   </div>

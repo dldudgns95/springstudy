@@ -5,11 +5,19 @@
   /* 함수 호출 */
   $(() => {
 	fnCheckEmail();
+	fnCheckPassword();
+	fnCheckPassword2();
+	fnCheckName();
+	fnCheckMobile();
 	fnJoin();
   })
   
   /* 전역변수 선언 */
   var emailPassed = false;
+  var pwPassed = false;
+  var pw2Passed = false;
+  var namePassed = false;
+  var mobilePassed = false;
   
   /* 함수 정의 */
   
@@ -86,10 +94,82 @@
 	})
   }
   
+  const fnCheckPassword = () => {
+	
+    $('#pw').keyup((ev) => {
+      let pw = $(ev.target).val();
+      // 비밀번호 : 8~20자, 영문,숫자,특수문자 (2개 이상)
+      let validPwCount = /[A-Z]/.test(pw)          // 대문자가 있으면   true
+                        + /[a-z]/.test(pw)         // 소문자가 있으면   true
+                        + /[0-9]/.test(pw)         // 숫자가 있으면     true
+                        + /[^A-Za-z0-9]/.test(pw); // 특수문자가 있으면 true
+      pwPassed = pw.length >= 8 && pw.length <= 20 && validPwCount >= 2;
+      if(pwPassed) {
+    	$('#msg_pw').text('사용 가능한 비밀번호입니다.');
+      } else {
+    	$('#msg_pw').text('비밀번호는 8~20자, 영문/숫자/특수문자를 2가지 이상 포함해야 합니다.');
+      }
+    })
+  }
+  
+  // blur  : 커서가 사라질 경우 이벤트 발생
+  // keyup : 키 하나 입력마다 이벤트 발생 
+    
+  const fnCheckPassword2 = () => {
+	$('#pw2').blur((ev) => {
+	  let pw = $('#pw').val();
+	  let pw2 = ev.target.value;
+	  pw2Passed =(pw !== '') && (pw === pw2);
+	  if(pw2Passed) {
+		$('#msg_pw2').text('');
+	  } else {
+		$('#msg_pw2').text('비밀번호 입력을 확인하세요.');
+	  }
+	})
+  }
+  
+  const fnCheckName = () => {
+	$('#name').blur((ev) => {
+	  let name = ev.target.value;
+	  let regName = /^[가-힣]{2,4}$/;
+	  namePassed = regName.test(name);
+	  if(namePassed){
+		$('#msg_name').text('');
+	  } else {
+		$('#msg_name').text('이름을 정확히 입력해주세요.');
+	  }
+	})
+  }
+  
+  const fnCheckMobile = () => {
+	$('#mobile').keyup((ev) => {
+	  let mobile = ev.target.value.replaceAll('-', '');
+	  let regMobile = /^010[0-9]{8}$/;
+	  mobilePassed = regMobile.test(mobile);
+	  if(mobilePassed){
+		$('#msg_mobile').text('');
+	  } else {
+		$('#msg_mobile').text('핸드폰 번호를 정확히 입력해주세요.');
+	  }
+	})	
+  }
+  
   const fnJoin = () => {
 	$('#frm_join').submit((ev) => {
 	  if(!emailPassed) {
 		alert('이메일을 인증 받아야 합니다.');
+		ev.preventDefault();
+		return;
+	  } else if(!pwPassed || !pw2Passed){
+	  	alert('비밀번호를 확인하세요');
+		ev.preventDefault();
+		return;
+	  } else if(!namePassed){
+	  	alert('이름을 확인하세요');
+		ev.preventDefault();
+		return;
+	  } else if(!mobilePassed){
+	  	alert('휴대전화번호를 확인하세요');
 		ev.preventDefault();
 		return;
 	  }

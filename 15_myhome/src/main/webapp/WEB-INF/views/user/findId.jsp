@@ -7,30 +7,31 @@
 <c:set var="dt" value="<%=System.currentTimeMillis() %>" />
 <!-- jsp:include 는 파라미터 전달이 필요할 때 사용 -->    
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="로그인" name="title"/>
+  <jsp:param value="아이디찾기" name="title"/>
 </jsp:include>
 
-
+<!-- script src를 사용할 때 ?dt=${dt}를 사용해서 항상 새로 업데이트되게 해줘야 한다. -->
+<script src="${contextPath}/resources/js/user_find_id.js?dt=${dt}"></script>
   
-<form action="${contextPath}/user/login.do" method="post">
+<form id="frm_find_id" action="${contextPath}/user/findId.do" method="post">
   <div>
-    <label for="email">아이디</label>
-    <input type="text" name="email" id="email" placeholder="admin@gmail.com">
+    <label for="name">이름</label>
+    <input type="text" name="name" id="name">
+    <span id="msg_name"></span>
   </div>
   <div>
-    <label for="pw">비밀번호</label>
-    <input type="password" name="pw" id="pw" placeholder="●●●●●●">
+    <label for="mobile">전화번호</label>
+    <input type="text" name="mobile" id="mobile">
+    <span id="msg_mobile"></span>
   </div>
   <div>
-    <input type="hidden" name="referer" value="${referer}">
-    <button type="submit">로그인</button>
+    <button type="submit">아이디찾기</button>
   </div>
 </form>
 
 <div>
   <ul>
-    <li><a href="${contextPath}">자동로그인</a></li>
-    <li><a href="${contextPath}/user/findId.form">아이디/비밀번호찾기</a></li>
+    <li><a href="${contextPath}/user/findPw.form">비밀번호찾기</a></li>
   </ul>
 </div>
 

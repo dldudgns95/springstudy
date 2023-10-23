@@ -74,12 +74,45 @@ public class UserController {
     return userService.sendCode(email);
   }
   
+  @PostMapping("/join.do")
+  public void join(HttpServletRequest request, HttpServletResponse response) {
+    userService.join(request, response);
+  }
   
+  @GetMapping("/mypage.form")
+  public String mypageForm() {
+    return "user/mypage";
+  }
   
+  @PostMapping(value="/modify.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> modify(HttpServletRequest request){
+    return userService.modify(request);
+  }
   
+  @GetMapping("/pwModify.form")
+  public String pwModifyForm() {
+    return "user/pw";
+  }
   
+  @PostMapping(value="/pwModify.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> pwModify(HttpServletRequest request){
+    return userService.modifyPw(request);
+  }
   
+  @PostMapping("/leave.do")
+  public void leave(HttpServletRequest request, HttpServletResponse response) {
+    userService.leave(request, response);
+  }
   
+  @GetMapping("/findId.form")
+  public String findIdForm() {
+    return "user/findId";
+  }
+  
+  @GetMapping("/findPW.form")
+  public String findPwForm() {
+    return "user/findPw";
+  }
   
   
   

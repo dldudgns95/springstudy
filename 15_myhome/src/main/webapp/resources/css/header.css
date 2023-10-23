@@ -8,11 +8,17 @@
   margin: 0 auto;
   padding-top: 50px; 
 }
+/*
 .logo {
   width: 272px;
   height: 92px;
   background-image: url(../../resources/image/google.png);
   background-size: 272px 92px;
+  margin: 50px auto;
+}
+*/
+.logo_img{
+  display: flex;
   margin: 50px auto;
 }
 .login_wrap {
