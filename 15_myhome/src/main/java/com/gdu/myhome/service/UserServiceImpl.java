@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService {
   
   @Override
   public String getNaverLoginURL(HttpServletRequest request) throws Exception {
-    // 네이버로그인-1
-    // 3.4.2네이버 로그인 연동 URL 생성하기를 위해 redirect_uri(URLEncoder, state(SecureRandom) 값의 전달이 필요하다.
+    // 네이버로그인-1 (네이버 로그인 개발 가이드 )
+    // 3.4.2 네이버 로그인 연동 URL 생성하기를 위해 redirect_uri(URLEncoder, state(SecureRandom) 값의 전달이 필요하다.
     // redirect_uri : 네이버로그인-2를 처리할 서버 경로를 작성한다.
     // redirect_uri 값은 네이버 로그인 Callback URL에도 동일하게 등록해야 한다.
     String apiURL = "https://nid.naver.com/oauth2.0/authorize";
@@ -110,7 +110,6 @@ public class UserServiceImpl implements UserService {
     sb.append("&redirect_uri=").append(redirect_uri);
     sb.append("&state=").append(state);
     
-    request.getSession().setAttribute("state", state);
     return sb.toString();
   }
 
@@ -200,6 +199,97 @@ public class UserServiceImpl implements UserService {
     return user;
   }
   
+  @Override
+  public UserDto getUser(String email) {
+    return userMapper.getUser(Map.of("email", email));
+  }
+  
+  @Override
+  public void naverJoin(HttpServletRequest request, HttpServletResponse response) {
+    
+    String email  = request.getParameter("email");
+    String name   = request.getParameter("name");
+    String gender = request.getParameter("gender");
+    String mobile = request.getParameter("mobile");
+    String event  = request.getParameter("event");
+    
+    UserDto user = UserDto.builder()
+                    .email(email)
+                    .name(name)
+                    .gender(gender)
+                    .mobile(mobile.replace("-", ""))
+                    .agree(event != null ? 1 : 0) // checkbox는 체크하면 'on'이 전달되고, 체크하지 않으면 값이 아무것도 전달되지 않는다.
+                    .build();
+    
+    int naverJoinResult = userMapper.insertNaverUser(user);
+    
+    try {
+      
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      out.println("<script>");
+      if(naverJoinResult == 1) {
+        // 회원가입을 하면 강제 로그인
+        request.getSession().setAttribute("user", userMapper.getUser(Map.of("email", email)));
+        userMapper.insertAccess(email);
+        out.println("alert('네이버 간편 가입이 완료되었습니다.')");
+      } else {
+        out.println("alert('네이버 간편 가입이 실패했습니다.')");
+      }
+      out.println("location.href='"+ request.getContextPath() +"/main.do'");
+      out.println("</script>");
+      out.flush();
+      out.close();
+      
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
+    
+  }
+  
+  @Override
+  public void naverLogin(HttpServletRequest request, HttpServletResponse response, UserDto naverProfile) throws Exception {
+    
+    String email = naverProfile.getEmail();
+    Map<String, Object> map = Map.of("email", email);
+    
+    HttpSession session = request.getSession();
+    
+    // 정상적인 로그인 처리하기
+    UserDto user = userMapper.getUser(map);
+    
+    if(user != null) {
+      // 로그인이 되었다면 session에 user가 있어야 한다.
+      session.setAttribute("user", user);
+      userMapper.insertAccess(email); 
+    
+      // 응답이 다양할 경우에는 controller를 거치지 않고 response로 직접 반환한다.
+      try {
+        // request.getParameter("referer") = http://localhost:8080/myhome/
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    } else {
+      try {
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<script>");
+        out.println("alert('일치하는 회원 정보가 없습니다.')");
+        out.println("history.go(-1)");
+        //out.println("location.href='"+request.getContextPath()+"/login.do'");
+        out.println("</script>");
+        out.flush();
+        out.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+    
+    
+    
+    
+  }
+  
   
   @Override
   public void logout(HttpServletRequest request, HttpServletResponse response) {
@@ -277,6 +367,7 @@ public class UserServiceImpl implements UserService {
       PrintWriter out = response.getWriter();
       out.println("<script>");
       if(joinResult == 1) {
+        // 회원가입을 하면 강제 로그인
         request.getSession().setAttribute("user", userMapper.getUser(Map.of("email", email)));
         userMapper.insertAccess(email);
         out.println("alert('회원 가입 되었습니다.')");

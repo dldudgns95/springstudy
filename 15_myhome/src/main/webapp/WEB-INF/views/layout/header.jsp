@@ -17,6 +17,9 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<script>
+  
+</script>
 </head>
 <body>
 
@@ -36,8 +39,8 @@
     </div>
     <div class="gnb_wrap">
       <ul class="gnb">
+        <li><a href="${contextPath}/free/list.do">계층게시판</a></li>
         <li><a href="${contextPath}">댓글형게시판</a></li>
-        <li><a href="${contextPath}">계층게시판</a></li>
         <li><a href="${contextPath}">첨부게시판</a></li>
         <li><a href="${contextPath}/user/mypage.form">MY</a></li>
       </ul>
