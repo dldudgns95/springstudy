@@ -83,7 +83,7 @@ public class MyPageUtils {
     
   }
   
-  public String getMvcSearchPaging(String url, String column, String query) {
+  public String getMvcPaging(String url, String params) {
     
     StringBuilder sb = new StringBuilder();
     
@@ -93,7 +93,7 @@ public class MyPageUtils {
     if(beginPage == 1) {
       sb.append("<a>이전</a>");
     } else {
-      sb.append("<a href=\"" + url + "?page=" + (beginPage - 1) + "&column=" + column + "&query=" + query + "\">이전</a>");
+      sb.append("<a href=\"" + url + "?page=" + (beginPage - 1) + "&" + params + "\">이전</a>");
     }
     
     // 페이지 번호
@@ -101,7 +101,7 @@ public class MyPageUtils {
       if(p == page) {
         sb.append("<a>" + p + "</a>");
       } else {
-        sb.append("<a href=\"" + url + "?page=" + p + "&column=" + column + "&query=" + query + "\">" + p + "</a>");
+        sb.append("<a href=\"" + url + "?page=" + p + "&" + params + "\">" + p + "</a>");
       }
     }
     
@@ -109,7 +109,7 @@ public class MyPageUtils {
     if(endPage == totalPage) {
       sb.append("<a>다음</a>");
     } else {
-      sb.append("<a href=\"" + url + "?page=" + (endPage + 1) + "&column=" + column + "&query=" + query + "\">다음</a>");
+      sb.append("<a href=\"" + url + "?page=" + (endPage + 1) + "&" + params + "\">다음</a>");
     }
     
     sb.append("</div>");
