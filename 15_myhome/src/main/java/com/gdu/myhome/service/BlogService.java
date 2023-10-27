@@ -10,4 +10,5 @@ public interface BlogService {
 
   public Map<String, Object> imageUpload(MultipartHttpServletRequest multipartRequest);
   public int addBlog(HttpServletRequest request);
+  public void blogImageBatch();
 }

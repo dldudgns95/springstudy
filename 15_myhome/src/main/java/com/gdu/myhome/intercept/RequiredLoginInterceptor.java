@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 /**
  * LoginStatusCheckInterceptor <br>
  * 로그인이 필요한 기능을 요청할 떄 로그인 여부를 점검하는 인터셉터
- *
+ * src/main/WEB-INF/spring/appServlet/servlet-context.xml에 interceptor 추가
  */
 @Component
 public class RequiredLoginInterceptor implements HandlerInterceptor {
