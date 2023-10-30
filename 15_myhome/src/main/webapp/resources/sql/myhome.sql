@@ -167,7 +167,46 @@ INSERT INTO FREE_T VALUES(FREE_SEQ.NEXTVAL, 'user2@naver.com', '내용21', SYSTI
 INSERT INTO FREE_T VALUES(FREE_SEQ.NEXTVAL, 'user1@naver.com', '내용22', SYSTIMESTAMP, 1, 0, FREE_SEQ.CURRVAL, 0);
 COMMIT;
 
--- 쿼리 테스트
+-- 블로그 쿼리 테스트
+
+-- 1. 목록(사용자 - 블로그 조인)
+-- 부모 : 일대다 관계에서 일(PK, UNIQUE) - 사용자
+-- 자식 : 일대다 관계에서 다(FK)         - 블로그
+
+-- 내부 : 사용자와 블로그에 모두 존재하는 데이터를 조인하는 방식
+-- 외부 : 사용자가 없는 블로그도 모두 조인하는 방식 (불가능)
+--        블로그가 없는 사용자도 모두 조인하는 방식 (필요 없는 방식)
+SELECT A.BLOG_NO, A.TITLE, A.CONTENTS, A.USER_NO, A.HIT, A.IP, A.CREATED_AT, A.MODIFIED_AT, A.EMAIL
+  FROM (SELECT ROW_NUMBER() OVER(ORDER BY B.BLOG_NO DESC) AS RN, B.BLOG_NO, B.TITLE, B.CONTENTS, B.USER_NO, B.HIT, B.IP, B.CREATED_AT, B.MODIFIED_AT, U.EMAIL
+          FROM USER_T U INNER JOIN BLOG_T B
+            ON U.USER_NO = B.USER_NO) A
+ WHERE RN BETWEEN 1 AND 10;
+ 
+-- 2. 상세
+
+-- 1) 조회수 증가
+UPDATE BLOG_T
+   SET HIT = HIT + 1
+ WHERE BLOG_NO = 1;
+-- 2) 블로그 상세 정보 조회
+SELECT B.BLOG_NO, B.TITLE, B.CONTENTS, B.HIT, B.IP, B.CREATED_AT, B.MODIFIED_AT, U.USER_NO, U.EMAIL, U.NAME
+  FROM USER_T U, BLOG_T B
+ WHERE U.USER_NO = B.USER_NO
+   AND B.BLOG_NO = 1;
+
+-- 3) 블로그 댓글 목록
+-- 블로그 - 댓글 : 1:N (댓글이 달린 블로그의 정보는 이미 상세보기에 모두 표시되어 있으므로 여기에선 조인할 필요가 없다.)
+-- 사용자 - 댓글 : 1:N (댓글의 사용자 이름을 표시)
+SELECT C.COMMENT_NO, C.CONTENTS, C.BLOG_NO, C.CREATED_AT, C.STATUS, C.DEPTH, C.GROUP_NO, U.USER_NO, U.NAME
+  FROM USER_T U INNER JOIN COMMENT_T C
+    ON U.USER_NO = C.USER_NO
+ WHERE C.BLOG_NO = 1;
+ 
+
+
+
+
+-- 계층 쿼리 테스트
 
 -- 1. 목록 (최근에 작성한 목록 10개)
 
@@ -185,7 +224,7 @@ SELECT FREE_NO, EMAIL, CONTENTS, CREATED_AT, STATUS, DEPTH, GROUP_NO, GROUP_ORDE
           FROM FREE_T)
  WHERE RN BETWEEN 5 AND 10;
 
--- 쿼리 테스트
+-- 사용자 쿼리 테스트
 
 -- 1. 로그일 할 때(이메일, 비밀번호 입력)
 -- 1) 정상 회원
@@ -261,6 +300,8 @@ COMMIT;
 INSERT INTO LEAVE_USER_T VALUES('user1@naver.com', TO_DATE('20220101', 'YYYYMMDD'), SYSDATE);
 DELETE FROM USER_T WHERE EMAIL = 'user1@naver.com';
 COMMIT;
+
+
 
 -- 2. 검색
 SELECT COUNT(*)
