@@ -122,7 +122,7 @@
   <update id="updateHit" parameterType="int">
     UPDATE BLOG_T
        SET HIT = HIT + 1
-     WHERE BLOG_NO = ${blogNo}
+     WHERE BLOG_NO = #{blogNo}
   </update>
   
   <select id="getBlog" parameterType="int" resultMap="BlogMap">
@@ -131,6 +131,32 @@
      WHERE U.USER_NO = B.USER_NO
        AND B.BLOG_NO = #{blogNo}
   </select>
+  
+  <select id="getBlogImage" parameterType="int" resultType="BlogImageDto">
+    SELECT BLOG_NO, IMAGE_PATH, FILESYSTEM_NAME
+      FROM BLOG_IMAGE_T
+     WHERE BLOG_NO = #{blogNo}
+  </select>
+  
+  <update id="updateBlog" parameterType="BlogDto">
+    UPDATE BLOG_T
+       SET TITLE = #{title}
+         , CONTENTS = #{contents}
+         , MODIFIED_AT = TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+     WHERE BLOG_NO = #{blogNo}
+  </update>
+  
+  <delete id="deleteBlog" parameterType="int">
+    DELETE
+      FROM BLOG_T
+     WHERE BLOG_NO = #{blogNo}
+  </delete>
+  
+  <delete id="deleteBlogImage" parameterType="int">
+    DELETE
+      FROM BLOG_IMAGE_T
+     WHERE BLOG_NO = #{blogNo}
+  </delete>
   
   <insert id="insertComment" parameterType="CommentDto">
     INSERT INTO COMMENT_T(
@@ -169,7 +195,33 @@
      WHERE A.RN BETWEEN #{begin} AND #{end}
   </select>
   
+  <insert id="insertCommentReply" parameterType="CommentDto">
+    INSERT INTO COMMENT_T(
+        COMMENT_NO
+      , CONTENTS
+      , USER_NO
+      , BLOG_NO
+      , CREATED_AT
+      , STATUS
+      , DEPTH
+      , GROUP_NO
+    ) VALUES(
+        COMMENT_SEQ.NEXTVAL
+      , #{contents}
+      , #{userDto.userNo}
+      , #{blogNo}
+      , TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+      , 1
+      , 1
+      , #{groupNo}
+    )
+  </insert>
   
+  <update id="deleteComment" parameterType="int">
+    UPDATE COMMENT_T
+       SET STATUS = 0
+     WHERE COMMENT_NO = #{commentNo}
+  </update>
   
   
   
