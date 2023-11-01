@@ -64,14 +64,20 @@ public class BlogController {
   
   @GetMapping("/detail.do")
   public String detail(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo
-                     , Model model) {
+                     , RedirectAttributes redirectAttributes) {
     BlogDto blog = blogService.getBlog(blogNo);
-    model.addAttribute("blog", blog);
-    List<BlogImageDto> blogImageList = blogService.getBlogImageList(blogNo);
+    redirectAttributes.addFlashAttribute("blog", blog);
+    return "redirect:/blog/imageDetail.do";
+  }
+  
+  @GetMapping("/imageDetail.do")
+  public String imageDetail(Model model) {
+    BlogDto blog = (BlogDto)model.getAttribute("blog");
+    List<BlogImageDto> blogImageList = blogService.getBlogImageList(blog.getBlogNo());
     model.addAttribute("blogImageList", blogImageList);
-    System.out.println("blogImageList : " + blogImageList);
     return "blog/detail";
   }
+  
   
   @PostMapping("/edit.form")
   public String editForm(@RequestParam(value="blogNo", required=false, defaultValue="0") int blogNo

@@ -1,0 +1,15 @@
+https://nm-it-diary.tistory.com/30
+
+        //============= 이미지 리사이즈 시작 =============
+
+        String imgOriginalPath= file1.getParent() + "/" + newName;           // 원본 이미지 파일명
+        String imgTargetPath= file1.getParent() + "/" + newName_small;  	 // 새 이미지 파일명
+        String imgFormat = "jpg";                            				 // 새 이미지 포맷. jpg, gif 등
+        int newWidth = 680;                                                  // 변경 할 넓이
+        int newHeight = 700;                                                 // 변경 할 높이
+        String mainPosition = "W";                                           // W:넓이중심, H:높이중심, X:설정한 수치로(비율무시)
+
+        boolean chkSave = ImageResize.resizeImage(imgOriginalPath, imgTargetPath, imgFormat, newWidth, newHeight, mainPosition);
+
+        //============= 이미지 리사이즈 끝 =============
+

@@ -65,9 +65,6 @@
   </div>  
   
 </div>
-<script>
-  console.log(${blogList}.length);
-</script>
 
 
 

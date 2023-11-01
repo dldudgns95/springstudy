@@ -85,11 +85,6 @@
   
   <script>
   
-	$.each(${blogImageList}, (i, blogImage) => {
-		console.log(blogImage.filesystemName);
-	})
-
-  
     const fnCommentAdd = () => {
   	$('#btn_comment_add, .btn_add_reply').click(() => {
   	  if('${sessionScope.user}' === '') {
@@ -257,7 +252,6 @@
       })
     }
     
-    fnRequiredLogin();
     fnCommentAdd();
     fnCommentList();
     fnBlind();

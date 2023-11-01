@@ -11,11 +11,15 @@ public class MyFileUtils {
 
   // 블로그 작성시 사용된 이미지가 저장될 경로 반환하기
   public String getBlogImagePath() {
-    
     /*  /storage/yyyy/MM/dd  */
     LocalDate today = LocalDate.now();
     return "/blog/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(today);
-    
+  }
+  
+  // 업로드 게시판 작성 시 첨부한 파일이 저장될 경로 반환하기
+  public String getUploadPath() {
+    LocalDate today = LocalDate.now();
+    return "/upload/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(today);
   }
   
   // 파일이 저장될 이름 반환하기
@@ -41,6 +45,8 @@ public class MyFileUtils {
     date =  date.minusDays(1); // 1일 전
     return "/blog/" + DateTimeFormatter.ofPattern("yyyy/MM/dd").format(date);
   }
+  
+  
   
   
   

@@ -26,7 +26,7 @@ public class LogoutStatusCheckInterceptor implements HandlerInterceptor {
       PrintWriter out = response.getWriter();
       out.println("<script>");
       out.println("alert('로그인 상태에서 불가능한 기능입니다.')");
-      out.println("history.back()");
+      out.println("location.href='" + request.getContextPath() + "/main.do'");
       out.println("</script>");
       out.flush();
       out.close();
