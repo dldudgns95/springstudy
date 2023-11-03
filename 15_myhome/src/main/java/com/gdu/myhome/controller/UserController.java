@@ -141,7 +141,12 @@ public class UserController {
     return "user/findId";
   }
   
-  @GetMapping("/findPW.form")
+  @PostMapping("/findId.do")
+  public String findId(HttpServletRequest request, Model model) {
+    return null;
+  }
+  
+  @GetMapping("/findPw.form")
   public String findPwForm() {
     return "user/findPw";
   }

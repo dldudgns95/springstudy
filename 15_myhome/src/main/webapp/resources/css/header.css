@@ -50,3 +50,11 @@
   background-color: #efefef;
 }
 
+.logo {
+  text-align:center;
+}
+
+.logo a {
+  display: inline-block;
+}
+

@@ -65,12 +65,16 @@
 	  success: (resData) => {  // resData = {"uploadList": [], "totalPage": 10}
 	    totalPage = resData.totalPage;
 		$.each(resData.uploadList, (i, upload) => { 
-		  let str = '<div class="upload">';
-		  str += '<div>' + upload.title        + '</div>';
-		  str += '<div>' + upload.userDto.name + '</div>';
-		  str += '<div>' + upload.createdAt    + '</div>';
+		  let str = '<a href="${contextPath}/upload/detail.do?uploadNo='+upload.uploadNo+'"><div class="upload">';
+		  str += '<div>제목: ' + upload.title        + '</div>';
+		  if(upload.userDto === null){
+    		str += '<div>작성: 정보없음</div>';
+		  } else {
+		    str += '<div>작성: ' + upload.userDto.name + '</div>';
+		  }
+		  str += '<div>생성: ' + upload.createdAt    + '</div>';
 		  str += '<div>첨부: ' + upload.attachCount  + '개</div>';
-		  str += '</div>';
+		  str += '</div></a>';
 		  $('#upload_list').append(str);
 		})
 	  }

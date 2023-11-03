@@ -11,19 +11,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${param.title == null ? '마이홈' : param.title}</title>
+<!-- 부트스트랩 사용하기 위한 cdn -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
 <link rel="stylesheet" href="${contextPath}/resources/css/init.css?dt=${dt}" />
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}" />
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}" />
 <link rel="stylesheet" href="${contextPath}/resources/css/footer.css?dt=${dt}" />
 
+<!-- jquery를 사용하기 위한 cdn -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- ckeditor를 사용하기 위한 cdn -->
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/decoupled-document/ckeditor.js"></script>
 </head>
 <body>
 
   <div class="header_wrap">
-    <div class="logo"><a href="${contextPath}/main.do"><img src="${contextPath}/resources/image/google.png" class="logo_img"></a></div>
+    <div class="logo"><a href="${contextPath}/main.do" ><img src="${contextPath}/resources/image/google.png" class="logo_img"></a></div>
     <div class="login_wrap">
       <c:if test="${sessionScope.user == null}">
         <ul class="ul_menu right_wrap">

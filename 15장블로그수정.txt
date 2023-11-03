@@ -1,0 +1,6 @@
+a b
+a b d
+select문 not in "filesystemName"으로 수정되서 없어진 파일을 select한 뒤에 delete문으로 삭제
+serviceImpl에서 getBlogImage로 List 가져온 뒤
+수정된 imagePath List를 2중 for문으로 대조(boolean으로 체크)
+대조 후 없으면 insert문으로 삽입
