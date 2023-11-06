@@ -46,6 +46,7 @@ public class UploadServiceImpl implements UploadService {
   
   @Override
   public boolean addUpload(MultipartHttpServletRequest multipartRequest) throws Exception {
+    
     String title = multipartRequest.getParameter("title");
     String contents = multipartRequest.getParameter("contents");
     int userNo = Integer.parseInt(multipartRequest.getParameter("userNo"));
@@ -118,6 +119,7 @@ public class UploadServiceImpl implements UploadService {
   @Transactional(readOnly = true)
   @Override
   public Map<String, Object> getUploadList(HttpServletRequest request) {
+    
     Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
     int page = Integer.parseInt(opt.orElse("1"));
     int total = uploadMapper.getUploadCount();
@@ -280,13 +282,134 @@ public class UploadServiceImpl implements UploadService {
     
   }
   
+  @Transactional(readOnly = true)
+  @Override
+  public UploadDto getUpload(int uploadNo) {
+    return uploadMapper.getUpload(uploadNo);
+  }
   
+  @Override
+  public int modifyUpload(UploadDto upload) {
+    return uploadMapper.updateUpload(upload);
+  }
   
+  @Override
+  public Map<String, Object> getAttachList(HttpServletRequest request) {
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("uploadNo"));
+    int uploadNo = Integer.parseInt(opt.orElse("0"));
+    
+    
+    return Map.of("attachList", uploadMapper.getAttachList(uploadNo));
+  }
   
+  @Override
+  public Map<String, Object> removeAttach(HttpServletRequest request) {
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("attachNo"));
+    int attachNo = Integer.parseInt(opt.orElse("0"));
+    
+    // 파일 삭제
+    AttachDto attach = uploadMapper.getAttach(attachNo);
+    File file = new File(attach.getPath(), attach.getFilesystemName());
+    if(file.exists()) {
+      file.delete();
+    }
+    // 썸네일 삭제
+    if(attach.getHasThumbnail() == 1) {
+      File thumbnail = new File(attach.getPath(), "s_" + attach.getFilesystemName());
+      if(thumbnail.exists()) {
+        thumbnail.delete();
+      }
+    }
+    // ATTACH_T 삭제
+    int removeResult = uploadMapper.deleteAttach(attachNo);
+    System.out.println("removeResult: " + removeResult);
+    
+    return Map.of("removeResult", removeResult);
+  }
   
+  @Override
+  public Map<String, Object> addAttach(MultipartHttpServletRequest multipartRequest) throws Exception {
+    
+    List<MultipartFile> files = multipartRequest.getFiles("files");
+    
+    int attachCount;
+    if(files.get(0).getSize() == 0) {
+      attachCount = 1;
+    } else {
+      attachCount = 0;
+    }
+    
+    for(MultipartFile multipartFile : files) {
+      // multipartFile 비어있는지 체크
+      if(multipartFile != null && !multipartFile.isEmpty()) {
+        String path = myFileUtils.getUploadPath();
+        File dir = new File(path);
+        if(!dir.exists()) {
+          dir.mkdirs();
+        }
+        
+        String originalFilename = multipartFile.getOriginalFilename();
+        String filesystemName = myFileUtils.getFilesystemName(originalFilename);
+        File file = new File(dir, filesystemName);
+        
+        multipartFile.transferTo(file);
+        
+        String contentType = Files.probeContentType(file.toPath()); // 이미지의 Content-Type : image/jpeg, image/png 등 image로 시작한다.
+        int hasThumbnail = (contentType != null && contentType.startsWith("image")) ? 1 : 0;
+        
+        // 썸네일이 있으면 원본파일 썸네일로 만들기
+        if(hasThumbnail == 1) {
+          File thumbnail = new File(dir, "s_" + filesystemName); // small 이미지를 의미하는 s_를 덧붙임
+          Thumbnails.of(file)
+                    .size(100, 100)       // 가로 100px, 세로 100px
+                    .toFile(thumbnail);
+        }
+        
+        AttachDto attach = AttachDto.builder()
+                              .path(path)
+                              .originalFilename(originalFilename)
+                              .filesystemName(filesystemName)
+                              .hasThumbnail(hasThumbnail)
+                              .uploadNo(Integer.parseInt(multipartRequest.getParameter("uploadNo")))
+                              .build();
+        
+        attachCount += uploadMapper.insertAttach(attach);
+        
+      }  // if
+      
+    }  // for
+    
+    return Map.of("attachResult", files.size() == attachCount ? true : false);
+    
+  }
   
-  
-  
+  @Override
+  public int removeUpload(int uploadNo) {
+    
+    // 파일 삭제
+    List<AttachDto> attachList = uploadMapper.getAttachList(uploadNo);
+    for(AttachDto attach : attachList) {
+      File file = new File(attach.getPath(), attach.getFilesystemName());
+      if(file.exists()) {
+        file.delete();
+      }
+      
+      // 썸네일 삭제
+      if(attach.getHasThumbnail() == 1) {
+        File thumbnail = new File(attach.getPath(), "s_" + attach.getFilesystemName());
+        if(thumbnail.exists()) {
+          thumbnail.delete();
+        }
+      }
+      
+    }
+    
+    // UPLOAD_T 삭제
+    
+    return uploadMapper.deleteUpload(uploadNo);
+  }
   
   
   

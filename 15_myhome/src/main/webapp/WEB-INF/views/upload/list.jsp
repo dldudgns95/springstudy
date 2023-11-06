@@ -127,9 +127,24 @@
 	}
   }
   
+  const fnRemoveResult = () => {
+	let removeResult = '${removeResult}'; // '', 'true', 'false'
+	if(removeResult !== '') {
+	  if(removeResult === '1') {
+		alert('게시글이 삭제 되었습니다.');
+		// 목록 갱신
+		$('#upload_list').empty();
+		fnGetUploadList();
+	  } else {
+		alert('게시글 삭제가 실패했습니다.');
+	  }
+	}
+  }
+  
   fnGetUploadList();
   fnScroll();
   fnAddResult();
+  fnRemoveResult();
   
 </script>
 
